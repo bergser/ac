@@ -12,6 +12,19 @@
     "title": {
       "type": "string",
       "required": false
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "published_at": {
+      "type": "datetime"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "draft",
+        "published"
+      ]
     }
   }
 }
