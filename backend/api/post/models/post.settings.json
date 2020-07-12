@@ -25,6 +25,11 @@
         "draft",
         "published"
       ]
+    },
+    "tags": {
+      "collection": "tag",
+      "via": "posts",
+      "dominant": true
     }
   }
 }

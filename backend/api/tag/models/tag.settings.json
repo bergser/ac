@@ -12,6 +12,10 @@
     "title": {
       "type": "string",
       "required": true
+    },
+    "posts": {
+      "via": "tags",
+      "collection": "post"
     }
   }
 }
