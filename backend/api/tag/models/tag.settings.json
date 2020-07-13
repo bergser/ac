@@ -9,13 +9,17 @@
     "timestamps": true
   },
   "attributes": {
-    "title": {
+    "name": {
       "type": "string",
       "required": true
     },
     "posts": {
-      "via": "tags",
-      "collection": "post"
+      "collection": "post",
+      "via": "tags"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
     }
   }
 }

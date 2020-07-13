@@ -27,9 +27,30 @@
       ]
     },
     "tags": {
-      "collection": "tag",
       "via": "posts",
+      "collection": "tag",
       "dominant": true
+    },
+    "author": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "visibility": {
+      "type": "enumeration",
+      "enum": [
+        "public",
+        "members",
+        "private"
+      ]
+    },
+    "feature_image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false
     }
   }
 }
