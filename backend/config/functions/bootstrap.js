@@ -13,9 +13,6 @@ const mime = require('mime');
  * See more details here: https://strapi.io/documentation/v3.x/concepts/configurations.html#bootstrap
  */
 
-let tagsConverted = 0;
-let postsConverted = 0;
-
 const convertTags = (tags) => {
 
   if (!tags[0]) {
@@ -40,7 +37,7 @@ const convertPost = (ghostPost) => {
   const content = html ? turndownService.turndown(html) : '';
   // html.replace('/content/images','uploads');
 
-  const postToAdd = {
+  return {
     title,
     content,
     author: 1,
@@ -48,9 +45,7 @@ const convertPost = (ghostPost) => {
     status,
     visibility: visibility === 'paid' ? 'private' : visibility,
     tags: []
-  }
-
-  return postToAdd;
+  };
 }
 
 const processPosts = async (posts, postsToTags) => {
@@ -99,19 +94,17 @@ const processPosts = async (posts, postsToTags) => {
       strapi.log.debug('Response', r);
     }
 
-    postsConverted++;
+
   } catch (e) {
-    strapi.log.warn(`Post ${postsConverted}`, postToAdd);
+    strapi.log.warn(`postToAdd`, postToAdd);
     strapi.log.warn(e);
   } finally {
     processPosts([...posts.slice(1)], postsToTags);
   }
-
 }
 
-module.exports = async () => {
-
-  const rawdata = fs.readFileSync('./data/ghost.json');
+const convertGhostDB =  async (fileName) => {
+  const rawdata = fs.readFileSync(fileName);
   const ghost_backup = JSON.parse(rawdata);
   const {posts, tags, posts_tags} = ghost_backup.db[0].data;
 
@@ -124,15 +117,44 @@ module.exports = async () => {
     postsToTags[value.post_id].push(tag.name);
   }
 
-  // await convertTags(tags);
+  await convertTags(tags);
 
   strapi.log.debug(`Posts to convert: ${posts.length}`);
-  try {
-    await processPosts(posts, postsToTags);
-  } catch (e) {
-    strapi.log.debug(e);
-  }
+  await processPosts(posts, postsToTags);
+  strapi.log.debug(`All done`);
+}
 
-  strapi.log.debug(`Posts converted: ${postsConverted}`);
+const transferImages = async () => {
+  // const posts = await strapi.services.post.find();
+
+  const step = 50;
+  let page = 1;
+  let posts = [];
+  let postsProcessedCount = 0;
+
+  do {
+    strapi.log.debug(`Page ${page}`);
+    posts = await strapi.query('post').find({
+      _start: page === 1 ? 1 : page * step,
+      _limit: step
+    });
+    for (const post of posts) {
+      await transferPostImages(post);
+      postsProcessedCount++;
+    }
+    page++;
+  } while (posts.length > 1)
+
+  strapi.log.debug(`Posts processed: ${postsProcessedCount}`);
+}
+
+const transferPostImages = async (post) => {
+  // strapi.log.debug('p', post.title);
+  return;
+}
+
+module.exports = async () => {
+  // await convertGhostDB('./data/ghost.json');
+  // await transferImages();
 };
 
