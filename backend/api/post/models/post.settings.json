@@ -27,8 +27,8 @@
       ]
     },
     "tags": {
-      "via": "posts",
       "collection": "tag",
+      "via": "posts",
       "dominant": true
     },
     "author": {
@@ -45,6 +45,18 @@
     },
     "feature_image": {
       "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "feature_image_old": {
+      "type": "string"
+    },
+    "images": {
+      "collection": "file",
       "via": "related",
       "allowedTypes": [
         "images"
