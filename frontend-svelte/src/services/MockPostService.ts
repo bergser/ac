@@ -6,7 +6,7 @@ export class MockPostService implements IPostService {
     const smaplePosts: IPost[] = [
       {
         id: 1,
-        content: 'test content',
+        content: 'test content 1',
         title: 'title 1'
       },
       {

@@ -1,5 +1,5 @@
 <script lang="ts">
-import PostsList from "./components/PostsList/PostsList.svelte";
+import PostsList from "./containers/PostsList/PostsList.svelte";
 	import { MockPostService } from "./services";
 
 	export let name: string;
