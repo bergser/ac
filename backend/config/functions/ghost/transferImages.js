@@ -1,30 +1,8 @@
 'use strict'
-
 const mime = require('mime');
 const path = require('path');
-
-const transferImage = async () => {
-  //https://github.com/strapi/strapi/issues/5475
-  if (postToProcess.feature_image) {
-
-    const pathName = require.resolve(`../../public/${postToProcess.feature_image}`);
-    strapi.log.debug(`Uploading `, pathName);
-    let stats = fs.statSync(pathName);
-    const files = {
-      feature_image: {
-        path: pathName,
-        size: stats["size"],
-        name: path.basename(pathName),
-        type: mime.getType(pathName)
-      }
-    };
-
-    const r = await strapi.entityService.uploadFiles(addedPost, files, {
-      model: strapi.models.post.modelName,
-    });
-    strapi.log.debug('Response', r);
-  }
-}
+const fs = require('fs');
+// const transferImage = require('./transferImage');
 
 module.exports = async () => {
   const step = 50;
@@ -34,6 +12,10 @@ module.exports = async () => {
 
   const postsCount = await strapi.services.post.count();
   strapi.log.debug(`Posts to process: ${postsCount}`);
+
+  const getImagePath = value => {
+    return `../../../public${value}`;
+  }
 
   do {
     strapi.log.debug(`Page ${page}`);
@@ -45,19 +27,55 @@ module.exports = async () => {
     for (const post of posts) {
 
       let postImagesCount = 0;
+      const files = {
+        images: []
+      };
 
-      const pattern = /(\/content\/images\/.*\.jpg|png|gif)/g;
+      if (post.feature_image_old) {
+        const featureImagePathName = require.resolve(getImagePath(post.feature_image_old));
+        let stats = fs.statSync(featureImagePathName);
+        files.feature_image = {
+          path: featureImagePathName,
+          size: stats["size"],
+          name: path.basename(featureImagePathName),
+          type: mime.getType(featureImagePathName),
+          fileInfo: {
+            caption: post.feature_image_old,
+            alternativeText: post.feature_image_old,
+          }
+        };
+      }
+
+      const pattern = /(\/content\/images\/.*\.(jpg|png|gif))/g;
       post.content.replace(pattern, async (value) => {
-        //strapi.log.debug(value);
+        const pathName = require.resolve(getImagePath(value));
+        let stats = fs.statSync(pathName);
+
+        files.images.push ({
+          path: pathName,
+          size: stats["size"],
+          name: path.basename(pathName),
+          type: mime.getType(pathName),
+          caption: value
+        });
+
         postImagesCount++;
       });
 
-      strapi.log.debug(`${postImagesCount} images found ${post.title}`);
+      try {
+        await strapi.entityService.uploadFiles(post, files, {
+          model: strapi.models.post.modelName,
+        });
+      } catch (error) {
+        strapi.log.debug(error);
+      }
+
+      strapi.log.debug(`[${postsProcessedCount}] ${postImagesCount} images found ${post.title}`);
       postsProcessedCount++;
     }
 
     page++;
-  } while (posts.length > 1)
+  } while (posts.length > 1 || postsProcessedCount < 5)
 
   strapi.log.debug(`Posts processed: ${postsProcessedCount}`);
 }

@@ -6,27 +6,17 @@ module.exports = async (tags) => {
 
   const tagsToConvert = tags.length;
   let convertedTagsCount = 0;
-  
-  await tags.forEach(async(ghostTag) => {
-    
+
+  for (const ghostTag of tags) {
     const {name, slug} = ghostTag;
-    const tag = await strapi.services.tag.findOne({
-      _where: {
-        slug
-      }
-    });
+    const tag = await strapi.services.tag.findOne({slug});
     
-    if (tag) {
-      return;
-    }
+    if (tag) return;
 
-    try {
-      await strapi.services.tag.create({name, slug});
-      convertedTagsCount++;
-    } catch (e) {
-      strapi.log.debug(e);
-    }
-  });
-
+    const createdTag = await strapi.services.tag.create({name, slug});
+    convertedTagsCount++;
+    strapi.log.debug(`[${convertedTagsCount}/${tagsToConvert}] ${createdTag.name}`)
+  }
+  
   strapi.log.debug('Tags converted:', `${convertedTagsCount}/${tagsToConvert}`);
 }
