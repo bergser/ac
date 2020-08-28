@@ -1,10 +1,15 @@
 <script lang="ts">
+import PostsList from "./components/PostsList/PostsList.svelte";
+	import { MockPostService } from "./services";
+
 	export let name: string;
+
+	const postService = new MockPostService();
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+
+	<PostsList postService={postService} />
 </main>
 
 <style>
