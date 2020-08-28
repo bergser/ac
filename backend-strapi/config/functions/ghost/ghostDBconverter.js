@@ -15,15 +15,6 @@ module.exports = async (fileName) => {
   // await convertTags(tags);
   // await convertPosts(posts, tags, posts_tags);
   // await transferImages();
-
-  /*const p = await strapi.services.post.find({
-    _start: 1,
-    _limit: 5
-  },['images']);
-
-  p.forEach(post => {
-    strapi.log.debug(JSON.stringify(post));
-  });*/
   
   strapi.log.debug(`All done`);
 }

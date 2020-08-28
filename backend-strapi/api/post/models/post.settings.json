@@ -27,9 +27,7 @@
       ]
     },
     "tags": {
-      "collection": "tag",
-      "via": "posts",
-      "dominant": true
+      "collection": "tag"
     },
     "author": {
       "plugin": "users-permissions",
