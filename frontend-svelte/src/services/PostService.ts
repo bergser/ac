@@ -1,5 +1,4 @@
 import type { IPostService, IPost } from "../interfaces";
-
 import Showdown from 'Showdown';
 const converter = new Showdown.Converter;
 
@@ -15,20 +14,15 @@ export class PostService implements IPostService {
   public async get(): Promise<IPost[]> {
     const res = await fetch(`http://localhost:1337/posts?_limit=${this._limit}`);
     const data = await res.json() as IPost[];
-
-    const items = data.map(item => {
-
-      let content = converter.makeHtml(item.content);
-
-      const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
-      item.content = content.replace(pattern, value => {
-        return 'http://localhost:1337' + value;
-      });
-
-      return item;
-    });
-
-    return items;
+    return data.map(p => this.enchancePost(p));
   }
 
+  private enchancePost(post: IPost): IPost {
+    let content = converter.makeHtml(post.content);
+    const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
+    post.content = content.replace(pattern, value => {
+      return 'http://localhost:1337' + value;
+    });
+    return post;
+  }
 }
