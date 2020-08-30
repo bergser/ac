@@ -1,4 +1,6 @@
 <script lang="ts">
+import LoginForm from "./components/LoginForm/LoginForm.svelte";
+
 import PostsList from "./containers/PostsList/PostsList.svelte";
 	import { MockPostService } from "./services";
 
@@ -8,7 +10,7 @@ import PostsList from "./containers/PostsList/PostsList.svelte";
 </script>
 
 <main>
-
+	<LoginForm />
 	<PostsList postService={postService} />
 </main>
 

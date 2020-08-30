@@ -4,36 +4,14 @@
   import PostCard from "../../components/PostCard/PostCard.svelte";
   import postsStore from '../../stores/posts-store';
 
-  import Showdown from 'Showdown';
-
-  const converter = new Showdown.Converter;
-
   export let postService: IPostService;
 
   onMount( async ()=> {
-    const res = await fetch(`http://localhost:1337/posts?_limit=30`);
-    const data = await res.json() as IPost[];
-
-    const items = data.map(item => {
-
-      let content = converter.makeHtml(item.content);
-
-      const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
-      item.content = content.replace(pattern, value => {
-        return 'http://localhost:1337' + value;
-      });
-
-      return item;
-    });
+    const items = await postService.limit(5).get();
 
     postsStore.setPosts(items);
   });
 
-  let posts: IPost[] = [];
-
-  const fetchPosts = (async () => {
-    posts = await postService.getPosts();
-	})();
 </script>
 
 <section>
