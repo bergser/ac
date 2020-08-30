@@ -1,6 +1,11 @@
 {
-  "name": "svelte-app",
+  "name": "ac-svelte",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:SergeiZheleznov/ac.git"
+  },
+  "license": "UNLICENSED",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
@@ -24,8 +29,11 @@
   },
   "dependencies": {
     "@types/showdown": "^1.9.3",
+    "apollo-boost": "^0.4.9",
     "axios": "^0.20.0",
+    "graphql": "^14.0.0",
     "showdown": "^1.9.1",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "svelte-apollo": "^0.3.0"
   }
 }
