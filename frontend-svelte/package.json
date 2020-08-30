@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@types/showdown": "^1.9.3",
+    "axios": "^0.20.0",
     "showdown": "^1.9.1",
     "sirv-cli": "^1.0.0"
   }
