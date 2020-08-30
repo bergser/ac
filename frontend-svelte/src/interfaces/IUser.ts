@@ -1,4 +1,8 @@
 export interface IUser {
   id: number;
-  name: string;
+  username: 'sksdes'
+  email: string;
+  confirmed: boolean;
+  blocked: boolean;
+  provider: 'local';
 }

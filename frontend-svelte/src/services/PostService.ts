@@ -3,7 +3,7 @@ import type { IPostService, IPost } from "../interfaces";
 import Showdown from 'Showdown';
 const converter = new Showdown.Converter;
 
-export class MockPostService implements IPostService {
+export class PostService implements IPostService {
 
   private _limit: number = 20;
   
@@ -13,7 +13,7 @@ export class MockPostService implements IPostService {
   }
 
   public async get(): Promise<IPost[]> {
-    const res = await fetch(`http://localhost:1337/posts?_limit=30`);
+    const res = await fetch(`http://localhost:1337/posts?_limit=${this._limit}`);
     const data = await res.json() as IPost[];
 
     const items = data.map(item => {

@@ -1,16 +1,22 @@
 <script lang="ts">
-import LoginForm from "./components/LoginForm/LoginForm.svelte";
+	import {onMount} from 'svelte';
+	import LoginForm from "./components/LoginForm/LoginForm.svelte";
+	import PostsList from "./containers/PostsList/PostsList.svelte";
+	import type { IAuthService, IPostService, IUser } from './interfaces';
 
-import PostsList from "./containers/PostsList/PostsList.svelte";
-	import { MockPostService } from "./services";
+	import userStore from './stores/user-store';
 
-	export let name: string;
+	export let authService: IAuthService;
+	export let postService: IPostService;
 
-	const postService = new MockPostService();
+	onMount(async() => {
+		const loggedUser = await authService.authorize();
+		userStore.setUser(loggedUser);
+	});
 </script>
 
 <main>
-	<LoginForm />
+	<LoginForm authService={authService} />
 	<PostsList postService={postService} />
 </main>
 
