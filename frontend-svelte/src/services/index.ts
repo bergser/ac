@@ -1,1 +1,1 @@
-export * from './MockPostService';
+export * from './PostService';

@@ -1,5 +1,6 @@
 import type { IPost } from ".";
 
 export interface IPostService {
-  getPosts(): Promise<IPost[]>;
+  limit(num: number): IPostService;
+  get(): Promise<IPost[]>;
 }
