@@ -4,12 +4,25 @@
   import PostCard from "../../components/PostCard/PostCard.svelte";
   import postsStore from '../../stores/posts-store';
 
+  import { getClient, restore, query } from 'svelte-apollo';
+  import {PostsQuery} from '../../queries/PostsQuery';
+
   export let postService: IPostService;
 
-  onMount( async ()=> {
-    const items = await postService.limit(5).get();
+  const client = getClient();
 
-    postsStore.setPosts(items);
+  interface IResponse {
+    posts: IPost[]
+  }
+
+  onMount( async ()=> {
+    // const items = await postService.limit(5).get();
+
+    const postsStoreGql = await query<IResponse, any, any>(client, { query: PostsQuery });
+    const res = await postsStoreGql.result();
+    console.log(res);
+    
+    postsStore.setPosts(res.data.posts);
   });
 
 </script>

@@ -30,8 +30,13 @@
   "dependencies": {
     "@types/showdown": "^1.9.3",
     "apollo-boost": "^0.4.9",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-http": "^1.5.17",
     "axios": "^0.20.0",
-    "graphql": "^14.0.0",
+    "graphql": "^14.7.0",
+    "graphql-tag": "^2.11.0",
     "showdown": "^1.9.1",
     "sirv-cli": "^1.0.0",
     "svelte-apollo": "^0.3.0"

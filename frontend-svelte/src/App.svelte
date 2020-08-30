@@ -4,10 +4,16 @@
 	import PostsList from "./containers/PostsList/PostsList.svelte";
 	import type { IAuthService, IPostService, IUser } from './interfaces';
 
+	import { setClient } from 'svelte-apollo';
+	import client from './svelte-appollo';
+
 	import userStore from './stores/user-store';
 
 	export let authService: IAuthService;
 	export let postService: IPostService;
+
+
+	setClient(client);
 
 	onMount(async() => {
 		const loggedUser = await authService.authorize();
