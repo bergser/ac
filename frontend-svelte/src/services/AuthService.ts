@@ -10,14 +10,18 @@ export class AuthService implements IAuthService {
   }
 
   public async authorize(): Promise<IUser> {
-    const jwt = window.localStorage.getItem('jwt');
-    const { data } = await axios.get(`${this.url}/users/me`, {
-      headers: {
-        Authorization:
-          `Bearer ${jwt}`,
-      },
-    });
-    return data as IUser;
+    try {
+      const jwt = window.localStorage.getItem('jwt');
+      const { data } = await axios.get(`${this.url}/users/me`, {
+        headers: {
+          Authorization:
+            `Bearer ${jwt}`,
+        },
+      });
+      return data as IUser;
+    } catch (error) {
+      return null; 
+    }
   }
   
   public async login(userCredentials: IUserCredentials): Promise<IUser> {

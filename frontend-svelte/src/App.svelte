@@ -2,19 +2,15 @@
 	import {onMount} from 'svelte';
 	import LoginForm from "./components/LoginForm/LoginForm.svelte";
 	import PostsList from "./containers/PostsList/PostsList.svelte";
-	import type { IAuthService, IPostService, IUser } from './interfaces';
-
-	import { setClient } from 'svelte-apollo';
+	import type { IAppConfig, IAuthService, IPostService, IUser } from './interfaces';
 	import client from './svelte-appollo';
-
 	import userStore from './stores/user-store';
+	import { AuthService, PostService } from './services';
 
-	export let authService: IAuthService;
-	export let postService: IPostService;
+	export let config: IAppConfig;
 
-
-	setClient(client);
-
+	const postService = new PostService(client);
+	const authService = new AuthService(config.authServer);
 	onMount(async() => {
 		const loggedUser = await authService.authorize();
 		userStore.setUser(loggedUser);
