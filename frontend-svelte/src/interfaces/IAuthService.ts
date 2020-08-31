@@ -5,4 +5,5 @@ export interface IAuthService {
   login(userCredentials: IUserCredentials): Promise<IUser>;
   authorize(): Promise<IUser>;
   logout(): void;
+  getToken(): string;
 }

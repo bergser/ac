@@ -7,31 +7,50 @@
 	import { AuthService, PostService } from './services';
 	import { ApolloClient } from "apollo-client";
 	import { createHttpLink } from "apollo-link-http";
+	import type { HttpOptions } from "apollo-link-http-common";
 	import { InMemoryCache } from "apollo-cache-inmemory";
 
 	export let config: IAppConfig;
 
-	const httpLink = createHttpLink({
-			uri: config.gqlServerURL,
-	});
-	const cache = new InMemoryCache();
-	const apolloClient = new ApolloClient({
-			link: httpLink,
-			cache,
-	});
-
-	const postService = new PostService(apolloClient, config.mediaLibraryURL);
 	const authService = new AuthService(config.authServerURL);
+	let postService: IPostService = null;
 
 	onMount(async() => {
 		const loggedUser = await authService.authorize();
 		userStore.setUser(loggedUser);
+
+		const jwt = authService.getToken();
+
+		const linkOptions: HttpOptions = {
+			uri: config.gqlServerURL
+		};
+
+		if (jwt) {
+			linkOptions.headers = {
+				Authorization:
+					`Bearer ${jwt}`,
+			}
+		}
+
+		const httpLink = createHttpLink(linkOptions);
+
+		const cache = new InMemoryCache();
+		const apolloClient = new ApolloClient({
+				link: httpLink,
+				cache,
+		});
+
+		postService = new PostService(apolloClient, config.mediaLibraryURL);
 	});
 </script>
 
 <main>
 	<LoginForm authService={authService} />
-	<PostsList postService={postService} />
+
+	{#if postService}
+		<PostsList postService={postService} />
+	{/if}
+
 </main>
 
 <style>

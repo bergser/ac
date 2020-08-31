@@ -5,13 +5,17 @@ export class AuthService implements IAuthService {
   
   public constructor(private url: string) {}
 
+  public getToken(): string {
+    return window.localStorage.getItem('jwt');
+  }
+
   public logout(): void {
     window.localStorage.removeItem('jwt');
   }
 
   public async authorize(): Promise<IUser> {
     try {
-      const jwt = window.localStorage.getItem('jwt');
+      const jwt = this.getToken();
       const { data } = await axios.get(`${this.url}/users/me`, {
         headers: {
           Authorization:

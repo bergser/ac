@@ -13,10 +13,13 @@ module.exports = {
    */
 
   async find(ctx) {
+
     let entities;
 
-    const user = ctx.state.user;
-    strapi.log.debug(user);
+    // const user = ctx.state.user;
+    strapi.log.debug('ctx.query',ctx.query);
+
+    ctx.query.visibility_in = ["private"];
 
     if (ctx.query._q) {
       entities = await strapi.services.post.search(ctx.query);
@@ -38,11 +41,6 @@ module.exports = {
     console.log(ctx);
 
     const entity = await strapi.services.post.findOne({ id });
-
-    // const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
-    // entity.content = entity.content.replace(pattern, value => {
-    //   return 'http://localhost:1337' + value;
-    // });
 
     return sanitizeEntity(entity, { model: strapi.models.post });
   },

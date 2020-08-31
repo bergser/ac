@@ -8,6 +8,7 @@ export const POSTS_NEW = gql`query($limit: Int) {
 		title
     published_at,
     content,
+    visibility,
     tags {
       name,
       slug
@@ -23,6 +24,7 @@ export const POSTS_BY_TAG = gql`query($limit: Int) {
 		title
     published_at,
     content,
+    visibility,
     tags (
       where: {
       	name_contains: "visual"

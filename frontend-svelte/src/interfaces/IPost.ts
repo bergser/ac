@@ -4,5 +4,6 @@ export interface IPost {
   id: number;
   title: string;
   content: string;
-  tags?: ITag[]
+  tags?: ITag[];
+  visibility: 'public' | 'private' | 'members';
 }

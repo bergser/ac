@@ -2,7 +2,7 @@ import type { IPostService, IPost } from "../interfaces";
 import Showdown from 'Showdown';
 import type ApolloClient from "apollo-client";
 import { POSTS_NEW } from "../queries/post";
-import { getClient, restore, query } from 'svelte-apollo';
+import { restore, query } from 'svelte-apollo';
 
 const converter = new Showdown.Converter;
 
@@ -28,7 +28,7 @@ export class PostService implements IPostService {
   public async get(): Promise<IPost[]> {
 
     const postsStoreGql = await query<IResponse, any, any>(this.apolloClient, { 
-      query: POSTS_NEW, 
+      query: POSTS_NEW,
       variables: {
         limit: this._limit
       } 
