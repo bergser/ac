@@ -16,7 +16,7 @@ export class PostService implements IPostService {
 
   private _limit: number = 20;
 
-  constructor(private apolloClient: ApolloClient<any>) {
+  constructor(private apolloClient: ApolloClient<any>, private mediaLibraryURL: string) {
 
   }
   
@@ -27,9 +27,13 @@ export class PostService implements IPostService {
 
   public async get(): Promise<IPost[]> {
 
-    const postsStoreGql = await query<IResponse, any, any>(this.apolloClient, { query: POSTS_NEW, variables: {limit: this._limit} });
+    const postsStoreGql = await query<IResponse, any, any>(this.apolloClient, { 
+      query: POSTS_NEW, 
+      variables: {
+        limit: this._limit
+      } 
+    });
     const result = await postsStoreGql.result();
-
     return result.data.posts.map(p => this.enchancePost(p));
   }
 
@@ -37,7 +41,7 @@ export class PostService implements IPostService {
     let content = converter.makeHtml(post.content);
     const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
     post.content = content.replace(pattern, value => {
-      return 'http://localhost:1337' + value;
+      return this.mediaLibraryURL + value;
     });
     return post;
   }

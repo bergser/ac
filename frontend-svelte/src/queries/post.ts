@@ -9,7 +9,8 @@ export const POSTS_NEW = gql`query($limit: Int) {
     published_at,
     content,
     tags {
-      name
+      name,
+      slug
     }
   }
 }`;

@@ -3,14 +3,26 @@
 	import LoginForm from "./components/LoginForm/LoginForm.svelte";
 	import PostsList from "./containers/PostsList/PostsList.svelte";
 	import type { IAppConfig, IAuthService, IPostService, IUser } from './interfaces';
-	import client from './svelte-appollo';
 	import userStore from './stores/user-store';
 	import { AuthService, PostService } from './services';
+	import { ApolloClient } from "apollo-client";
+	import { createHttpLink } from "apollo-link-http";
+	import { InMemoryCache } from "apollo-cache-inmemory";
 
 	export let config: IAppConfig;
 
-	const postService = new PostService(client);
-	const authService = new AuthService(config.authServer);
+	const httpLink = createHttpLink({
+			uri: config.gqlServerURL,
+	});
+	const cache = new InMemoryCache();
+	const apolloClient = new ApolloClient({
+			link: httpLink,
+			cache,
+	});
+
+	const postService = new PostService(apolloClient, config.mediaLibraryURL);
+	const authService = new AuthService(config.authServerURL);
+
 	onMount(async() => {
 		const loggedUser = await authService.authorize();
 		userStore.setUser(loggedUser);
@@ -23,23 +35,8 @@
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+ main {
+	 max-width: 950px;
+	 margin: 0 auto;
+ }
 </style>
