@@ -1,5 +1,10 @@
 import App from './App.svelte';
 import type { IAppConfig } from './interfaces';
+import Logger from  'js-logger';
+
+Logger.useDefaults({
+	defaultLevel: Logger.DEBUG,
+});
 
 const config: IAppConfig =  {
 	gqlServerURL: 'http://localhost:1337/graphql',

@@ -3,7 +3,9 @@ import axios from 'axios';
 
 export class AuthService implements IAuthService {
   
-  public constructor(private url: string) {}
+  public constructor(
+    private url: string
+    ) {}
 
   public getToken(): string {
     return window.localStorage.getItem('jwt');

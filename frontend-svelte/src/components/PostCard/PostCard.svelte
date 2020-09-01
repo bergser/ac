@@ -10,13 +10,8 @@
       <li>{tag.slug}</li>
     {/each}
   </ul>
-  <div class="content">
-    {@html post.content}
-  </div>
 </div>
 
 <style>
-  :global(.content img) {
-    max-width: 100% !important;
-  }
+
 </style>

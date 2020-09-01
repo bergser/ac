@@ -7,7 +7,14 @@ export const POSTS_NEW = gql`query($limit: Int) {
   ){
 		title
     published_at,
-    content,
+    feature_image {
+      id
+      alternativeText
+      width
+      height
+      formats
+      url
+    }
     visibility,
     tags {
       name,

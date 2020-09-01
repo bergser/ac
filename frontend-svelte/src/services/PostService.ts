@@ -1,10 +1,12 @@
-import type { IPostService, IPost } from "../interfaces";
-import Showdown from 'showdown';
+import type { IPostService, IPost, IPostFull } from "../interfaces";
+import showdown from 'showdown';
 import type ApolloClient from "apollo-client";
 import { POSTS_NEW } from "../queries/post";
 import { restore, query } from 'svelte-apollo';
+import Logger from  'js-logger';
+const LOG_SOURCE: string = 'PostService';
 
-const converter = new Showdown.Converter;
+const converter = new showdown.Converter;
 
 interface IResponse {
   data: {
@@ -16,7 +18,10 @@ export class PostService implements IPostService {
 
   private _limit: number = 20;
 
-  constructor(private apolloClient: ApolloClient<any>, private mediaLibraryURL: string) {
+  constructor(
+    private apolloClient: ApolloClient<any>,
+    private mediaLibraryURL: string
+    ) {
 
   }
   
@@ -27,6 +32,8 @@ export class PostService implements IPostService {
 
   public async get(): Promise<IPost[]> {
 
+    Logger.debug(`[${LOG_SOURCE}] get()`);
+
     const postsStoreGql = await query<IResponse, any, any>(this.apolloClient, { 
       query: POSTS_NEW,
       variables: {
@@ -34,10 +41,13 @@ export class PostService implements IPostService {
       } 
     });
     const result = await postsStoreGql.result();
-    return result.data.posts.map(p => this.enchancePost(p));
+
+    Logger.info(`[${LOG_SOURCE}]`, result);
+    return result.data.posts;
+    // return result.data.posts.map(p => this.enchancePost(p));
   }
 
-  private enchancePost(post: IPost): IPost {
+  private enchancePost(post: IPostFull): IPostFull {
     let content = converter.makeHtml(post.content);
     const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
     post.content = content.replace(pattern, value => {
