@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - 'frontend-svelte/**'
+      - 'frontend/svelte/**'
 jobs:
   build:
     runs-on: ubuntu-latest
