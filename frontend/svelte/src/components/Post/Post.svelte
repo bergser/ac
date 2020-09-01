@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { IPostFull } from "../../interfaces";
-	export let post: IPostFull;
+  import type { IPost } from "../../../../shared/interfaces";
+	export let post: IPost;
 </script>
 
 <div class="post">

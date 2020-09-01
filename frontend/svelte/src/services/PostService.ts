@@ -1,4 +1,4 @@
-import type { IPostService, IPost } from "../interfaces";
+import type { IPostService, IPost } from "../../../shared/interfaces";
 import showdown from 'showdown';
 import type ApolloClient from "apollo-client";
 import { POSTS_NEW } from "../queries/post";

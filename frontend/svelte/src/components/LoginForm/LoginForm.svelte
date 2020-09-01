@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { IAuthService, IUserCredentials } from "../../interfaces";
+  import type { IAuthService, IUserCredentials } from "../../../../shared/interfaces";
   import { AuthService } from "../../services/AuthService";
   import userStore from '../../stores/user-store';
   

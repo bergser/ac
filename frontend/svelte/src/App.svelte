@@ -2,7 +2,7 @@
 	import {onMount} from 'svelte';
 	import LoginForm from "./components/LoginForm/LoginForm.svelte";
 	import PostsList from "./containers/PostsList/PostsList.svelte";
-	import type { IAppConfig, IAuthService, IPostService, IUser } from './interfaces';
+	import type { IAppConfig, IAuthService, IPostService, IUser } from '../../shared/interfaces';
 	import userStore from './stores/user-store';
 	import { AuthService, PostService } from './services';
 	import { ApolloClient } from "apollo-client";

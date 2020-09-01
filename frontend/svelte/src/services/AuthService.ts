@@ -1,4 +1,4 @@
-import type { IAuthService, IUserCredentials, IUser } from "../interfaces";
+import type { IAuthService, IUserCredentials, IUser } from "../../../shared/interfaces";
 import axios from 'axios';
 import Logger from  'js-logger';
 const LOG_SOURCE: string = 'PostService';
@@ -22,16 +22,20 @@ export class AuthService implements IAuthService {
     Logger.debug(`[${LOG_SOURCE}] authenticate()`);
     try {
       const jwt = this.getToken();
-      const { data } = await axios.get(`${this.url}/users/me`, {
-        headers: {
-          Authorization:
-            `Bearer ${jwt}`,
-        },
-      });
-      return data as IUser;
+      if (jwt) {
+        const { data } = await axios.get(`${this.url}/users/me`, {
+          headers: {
+            Authorization:
+              `Bearer ${jwt}`,
+          },
+        });
+        return data as IUser;
+      }
+
     } catch (error) {
-      return null; 
+      Logger.error(`[${LOG_SOURCE}]`, error);
     }
+    return null;
   }
   
   public async login(userCredentials: IUserCredentials): Promise<IUser> {

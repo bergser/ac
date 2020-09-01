@@ -1,5 +1,5 @@
 import App from './App.svelte';
-import type { IAppConfig } from './interfaces';
+import type { IAppConfig } from '../../shared/interfaces';
 import Logger from  'js-logger';
 
 Logger.useDefaults({
