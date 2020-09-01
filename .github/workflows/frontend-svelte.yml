@@ -26,4 +26,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: frontend-svelte
-        path: ${{env.working-directory}}/frontend-svelte/public/
+        path: ${{env.working-directory}}/public/
