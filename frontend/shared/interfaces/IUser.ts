@@ -1,6 +1,6 @@
 export interface IUser {
   id: number;
-  username: 'sksdes'
+  username: string;
   email: string;
   role: {
     type: 'authenticated' | 'public'
