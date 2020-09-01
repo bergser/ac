@@ -1,5 +1,5 @@
 import type { IPostService, IPost } from "../interfaces";
-import Showdown from 'Showdown';
+import Showdown from 'showdown';
 import type ApolloClient from "apollo-client";
 import { POSTS_NEW } from "../queries/post";
 import { restore, query } from 'svelte-apollo';
