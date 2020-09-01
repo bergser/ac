@@ -5,3 +5,4 @@ export * from './IUser';
 export * from './IUserCredentials';
 export * from './IAppConfig';
 export * from './ITag';
+export * from './IImage';

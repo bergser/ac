@@ -8,7 +8,7 @@
   let posts: IPost[] = [];
 
   onMount( async ()=> {
-    posts = await postService.limit(2).get();
+    posts = await postService.limit(15).get();
   });
 </script>
 

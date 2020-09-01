@@ -1,4 +1,4 @@
-import type { IPostService, IPost, IPostFull } from "../interfaces";
+import type { IPostService, IPost } from "../interfaces";
 import showdown from 'showdown';
 import type ApolloClient from "apollo-client";
 import { POSTS_NEW } from "../queries/post";
@@ -43,16 +43,31 @@ export class PostService implements IPostService {
     const result = await postsStoreGql.result();
 
     Logger.info(`[${LOG_SOURCE}]`, result);
-    return result.data.posts;
-    // return result.data.posts.map(p => this.enchancePost(p));
+    return result.data.posts.map(p => this.enchancePost(p));
   }
 
-  private enchancePost(post: IPostFull): IPostFull {
-    let content = converter.makeHtml(post.content);
-    const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
-    post.content = content.replace(pattern, value => {
-      return this.mediaLibraryURL + value;
-    });
+  private enchancePost(post: IPost): IPost {
+    const {mediaLibraryURL} = this;
+
+    if (post.content) {
+      let content = converter.makeHtml(post.content);
+      const pattern = /(\/uploads\/.*\.(jpg|png|gif))/g;
+      post.content = content.replace(pattern, value => {
+        return mediaLibraryURL + value;
+      });
+    }
+
+    if (post.feature_image) {
+      post.feature_image.url = `${mediaLibraryURL}${post.feature_image.url}`;
+
+      for (const key in post.feature_image.formats) {
+        if (Object.prototype.hasOwnProperty.call(post.feature_image.formats, key)) {
+          const element = post.feature_image.formats[key];
+          element.url = `${mediaLibraryURL}${element.url}`;
+        }
+      }
+    }
+
     return post;
   }
 }

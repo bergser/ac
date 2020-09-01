@@ -14,12 +14,12 @@ export class AuthService implements IAuthService {
   }
 
   public logout(): void {
-    Logger.trace(`[${LOG_SOURCE}] logout()`);
+    Logger.debug(`[${LOG_SOURCE}] logout()`);
     window.localStorage.removeItem('jwt');
   }
 
   public async authenticate(): Promise<IUser> {
-    Logger.trace(`[${LOG_SOURCE}] authenticate()`);
+    Logger.debug(`[${LOG_SOURCE}] authenticate()`);
     try {
       const jwt = this.getToken();
       const { data } = await axios.get(`${this.url}/users/me`, {
