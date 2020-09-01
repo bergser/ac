@@ -16,10 +16,9 @@ module.exports = {
 
     let entities;
 
-    // const user = ctx.state.user;
-    strapi.log.debug('ctx.query',ctx.query);
-
-    ctx.query.visibility_in = ["private"];
+    if (!ctx.state.user) {
+      ctx.query.visibility_nin = ["private", "members"];
+    }
 
     if (ctx.query._q) {
       entities = await strapi.services.post.search(ctx.query);
@@ -37,10 +36,16 @@ module.exports = {
    */
 
   async findOne(ctx) {
-    const { id } = ctx.params;
-    console.log(ctx);
 
-    const entity = await strapi.services.post.findOne({ id });
+    const query = { 
+      id: ctx.params.id
+    };
+
+    if (!ctx.state.user) {
+      query.visibility_nin = ["private", "members"];
+    }
+
+    const entity = await strapi.services.post.findOne(query);
 
     return sanitizeEntity(entity, { model: strapi.models.post });
   },
