@@ -3,7 +3,7 @@ import type { IAppConfig } from './interfaces';
 import Logger from  'js-logger';
 
 Logger.useDefaults({
-	defaultLevel: Logger.DEBUG,
+	defaultLevel: Logger.TRACE,
 });
 
 const config: IAppConfig =  {

@@ -12,11 +12,11 @@
 
 	export let config: IAppConfig;
 
-	const authService = new AuthService(config.authServerURL);
+	const authService: IAuthService = new AuthService(config.authServerURL);
 	let postService: IPostService = null;
 
 	onMount(async() => {
-		const loggedUser = await authService.authorize();
+		const loggedUser = await authService.authenticate();
 		userStore.setUser(loggedUser);
 
 		const jwt = authService.getToken();
@@ -39,7 +39,6 @@
 				link: httpLink,
 				cache,
 		});
-
 		postService = new PostService(apolloClient, config.mediaLibraryURL);
 	});
 </script>

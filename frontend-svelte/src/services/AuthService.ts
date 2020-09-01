@@ -1,5 +1,7 @@
 import type { IAuthService, IUserCredentials, IUser } from "../interfaces";
 import axios from 'axios';
+import Logger from  'js-logger';
+const LOG_SOURCE: string = 'PostService';
 
 export class AuthService implements IAuthService {
   
@@ -12,10 +14,12 @@ export class AuthService implements IAuthService {
   }
 
   public logout(): void {
+    Logger.trace(`[${LOG_SOURCE}] logout()`);
     window.localStorage.removeItem('jwt');
   }
 
-  public async authorize(): Promise<IUser> {
+  public async authenticate(): Promise<IUser> {
+    Logger.trace(`[${LOG_SOURCE}] authenticate()`);
     try {
       const jwt = this.getToken();
       const { data } = await axios.get(`${this.url}/users/me`, {
@@ -31,6 +35,7 @@ export class AuthService implements IAuthService {
   }
   
   public async login(userCredentials: IUserCredentials): Promise<IUser> {
+    Logger.debug(`[${LOG_SOURCE}] login()`);
     const { data } = await axios.post(`${this.url}/auth/local`, userCredentials);
     const {user, jwt} = data as {
       jwt: string,
