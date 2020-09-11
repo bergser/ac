@@ -9,12 +9,15 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public",
+    "start": "sirv public --single",
     "validate": "svelte-check"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
+    "@rollup/plugin-typescript": "^4.0.0",
+    "@tsconfig/svelte": "^1.0.0",
+    "@types/page": "^1.8.0",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^6.0.0",
@@ -22,10 +25,8 @@
     "svelte": "^3.0.0",
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.0",
-    "@rollup/plugin-typescript": "^4.0.0",
-    "typescript": "^4.0.2",
     "tslib": "^2.0.0",
-    "@tsconfig/svelte": "^1.0.0"
+    "typescript": "^4.0.2"
   },
   "dependencies": {
     "@types/showdown": "^1.9.3",
@@ -38,6 +39,7 @@
     "graphql": "^14.7.0",
     "graphql-tag": "^2.11.0",
     "js-logger": "^1.6.0",
+    "page": "^1.11.6",
     "showdown": "^1.9.1",
     "sirv-cli": "^1.0.0",
     "svelte-apollo": "^0.3.0"

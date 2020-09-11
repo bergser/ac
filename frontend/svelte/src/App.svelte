@@ -2,13 +2,28 @@
 	import {onMount} from 'svelte';
 	import LoginForm from "./components/LoginForm/LoginForm.svelte";
 	import PostsList from "./containers/PostsList/PostsList.svelte";
-	import type { IAppConfig, IAuthService, IPostService, IUser } from '../../shared/interfaces';
+	import type { IAppConfig, IAuthService, IPostService, IUser } from './shared/interfaces';
 	import userStore from './stores/user-store';
 	import { AuthService, PostService } from './services';
 	import { ApolloClient } from "apollo-client";
 	import { createHttpLink } from "apollo-link-http";
 	import type { HttpOptions } from "apollo-link-http-common";
 	import { InMemoryCache } from "apollo-cache-inmemory";
+	import router from 'page'; // https://blog.jscrambler.com/svelte-routing-with-page-js/
+	import HomeRoute from './routes/HomeRoute.svelte';
+	import PostRoute from './routes/PostRoute.svelte';
+	import NotFoundRoute from './routes/NotFoundRoute.svelte';
+
+	let page;
+	let params;
+	router('/', () => page = HomeRoute);
+	router('/p/:id', (ctx, next) => {
+		params = ctx.params;
+		next();
+	}, () => page = PostRoute);
+	router('*', () => page = NotFoundRoute);
+
+	router.start()
 
 	export let config: IAppConfig;
 
@@ -49,7 +64,7 @@
 	{#if postService}
 		<PostsList postService={postService} />
 	{/if}
-
+	<svelte:component this={page} params={params} />
 </main>
 
 <style>
