@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import type { IPost, IPostService } from "../../../../shared/interfaces";
+  import type { IPost, IPostService } from "../../shared/interfaces";
   import PostCard from "../../components/PostCard/PostCard.svelte";
 
   export let postService: IPostService;

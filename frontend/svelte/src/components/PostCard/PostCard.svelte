@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { IPost } from "../../../../shared/interfaces";
+  import type { IPost } from "../../shared/interfaces";
   export let post: IPost;
   
 </script>

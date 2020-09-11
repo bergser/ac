@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { IUser } from '../../../shared/interfaces';
+import type { IUser } from '../shared/interfaces';
 
 const user = writable(null);
 

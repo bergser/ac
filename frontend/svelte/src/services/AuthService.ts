@@ -1,4 +1,4 @@
-import type { IAuthService, IUserCredentials, IUser } from "../../../shared/interfaces";
+import type { IAuthService, IUserCredentials, IUser } from "../shared/interfaces";
 import axios from 'axios';
 import Logger from  'js-logger';
 const LOG_SOURCE: string = 'PostService';
