@@ -3,13 +3,16 @@
   export let post: IPost;
 
   const tizer = post?.feature_image?.formats?.small;
+
+  const boxHeight: number = 200;
+  const boxWidth: number = tizer ? Math.round(200 / +tizer.height * +tizer.width) : 200;
 </script>
 
-<div class="card mb-4 mr-4 relative">
-  <h2 class="absolute bottom-0 block bg-gray-200 w-full text-sm font-semibold">{post.title}</h2>
+<div class="card mb-4 mr-4 relative" style="width: {boxWidth}px;">
   {#if tizer}
-    <img width="{ Math.round(200 / +tizer.height * +tizer.width)}" height={200} src={tizer.url} alt="{post.title}" />
+    <img width="{boxWidth}" height={200} src={tizer.url} alt="{post.title}" />
   {/if}
+  <h2 class="block text-sm font-semibold">{@html post.title}</h2>
 </div>
 
 <style>
@@ -19,5 +22,9 @@
 }
 .card img {
   height: 200px;
+}
+h2 {
+  max-width: 100%;
+  overflow: hidden;
 }
 </style>

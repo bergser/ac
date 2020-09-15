@@ -18,12 +18,7 @@ export class PostService implements IPostService {
 
   private _limit: number = 20;
 
-  constructor(
-    private apolloClient: ApolloClient<any>,
-    private mediaLibraryURL: string
-    ) {
-
-  }
+  constructor(private apolloClient: ApolloClient<any>, private mediaLibraryURL: string) { }
   
   public limit(num: number): IPostService {
     this._limit = num;

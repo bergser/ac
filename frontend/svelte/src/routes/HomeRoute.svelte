@@ -1,10 +1,14 @@
 <script lang="ts">
-  import type { IPostService } from "../shared/interfaces";
+  import type { IPostService, ITagService } from "../shared/interfaces";
   import PostsList from '../containers/PostsList/PostsList.svelte';
+  import TagLookup from "../components/TagLookup/TagLookup.svelte";
   export let params: {
-    postService: IPostService
+    postService: IPostService,
+    tagService: ITagService
   };
+
 </script>
 <section>
-    <PostsList postService={params.postService} />
+  <TagLookup tagService={params.tagService} />
+  <PostsList postService={params.postService} />
 </section>

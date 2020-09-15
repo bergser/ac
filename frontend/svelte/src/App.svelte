@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { onMount } from 'svelte';
 	import LoginForm from "./components/LoginForm/LoginForm.svelte";
 	import PostsList from "./containers/PostsList/PostsList.svelte";
-	import type { IAppConfig, IAuthService, IPostService, IUser } from './shared/interfaces';
+	import type { IAppConfig, IAuthService, IPostService, ITagService, IUser } from './shared/interfaces';
 	import userStore from './stores/user-store';
-	import { AuthService, PostService } from './services';
+	import { AuthService, PostService, TagService } from './services';
 	import { ApolloClient } from "apollo-client";
 	import { createHttpLink } from "apollo-link-http";
 	import type { HttpOptions } from "apollo-link-http-common";
@@ -21,7 +21,8 @@
 
 	let page;
 	let params: {
-		postService?: IPostService
+		postService?: IPostService,
+		tagService?: ITagService
 	} = {};
 	router('/', () => page = HomeRoute);
 	router('/p/:id', (ctx, next) => {
@@ -59,6 +60,7 @@
 					cache,
 			});
 			params.postService = new PostService(apolloClient, config.mediaLibraryURL);
+			params.tagService = new TagService(apolloClient);
 			status = 'loaded';
 		} catch (error) {
 			console.error(error);
