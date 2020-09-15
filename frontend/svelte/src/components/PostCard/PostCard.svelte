@@ -10,7 +10,7 @@
 
 <div class="card mb-4 mr-4 relative" style="width: {boxWidth}px;">
   {#if tizer}
-    <img width="{boxWidth}" height={200} src={tizer.url} alt="{post.title}" />
+    <img width="{boxWidth}" height={200} src={tizer.url} class="lazy" alt="{post.title}" />
   {/if}
   <h2 class="block text-sm font-semibold">{@html post.title}</h2>
 </div>
