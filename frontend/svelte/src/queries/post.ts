@@ -6,7 +6,6 @@ export const POSTS_NEW = gql`query($limit: Int) {
     sort: "published_at:desc"
   ){
 		title
-    published_at,
     feature_image {
       id
       alternativeText
@@ -15,7 +14,6 @@ export const POSTS_NEW = gql`query($limit: Int) {
       formats
       url
     }
-    visibility,
     tags {
       name,
       slug

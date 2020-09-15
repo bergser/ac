@@ -8,12 +8,11 @@
   let posts: IPost[] = [];
 
   onMount( async ()=> {
-    posts = await postService.limit(15).get();
+    posts = await postService.limit(50).get();
   });
 </script>
 
 <section>
-  <h2>Posts List</h2>
   <div class="flex flex-wrap">
     {#each posts as post, i}
       <PostCard post={post} />

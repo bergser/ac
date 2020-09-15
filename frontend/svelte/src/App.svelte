@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import LoginForm from "./components/LoginForm/LoginForm.svelte";
 	import PostsList from "./containers/PostsList/PostsList.svelte";
 	import type { IAppConfig, IAuthService, IPostService, IUser } from './shared/interfaces';
@@ -13,58 +13,70 @@
 	import HomeRoute from './routes/HomeRoute.svelte';
 	import PostRoute from './routes/PostRoute.svelte';
 	import NotFoundRoute from './routes/NotFoundRoute.svelte';
+	import Loader from './components/Loader/Loader.svelte';
+
+	export let config: IAppConfig;
+
+	const authService: IAuthService = new AuthService(config.authServerURL);
 
 	let page;
-	let params;
+	let params: {
+		postService?: IPostService
+	} = {};
 	router('/', () => page = HomeRoute);
 	router('/p/:id', (ctx, next) => {
 		params = ctx.params;
 		next();
 	}, () => page = PostRoute);
 	router('*', () => page = NotFoundRoute);
+	router.start();
 
-	router.start()
-
-	export let config: IAppConfig;
-
-	const authService: IAuthService = new AuthService(config.authServerURL);
-	let postService: IPostService = null;
+	let status: 'loading' | 'loaded' | 'error' = 'loading';
 
 	onMount(async() => {
-		const loggedUser = await authService.authenticate();
-		userStore.setUser(loggedUser);
+		try {
+			const loggedUser = await authService.authenticate();
+			userStore.setUser(loggedUser);
 
-		const jwt = authService.getToken();
+			const jwt = authService.getToken();
 
-		const linkOptions: HttpOptions = {
-			uri: config.gqlServerURL
-		};
+			const linkOptions: HttpOptions = {
+				uri: config.gqlServerURL
+			};
 
-		if (jwt) {
-			linkOptions.headers = {
-				Authorization:
-					`Bearer ${jwt}`,
+			if (jwt) {
+				linkOptions.headers = {
+					Authorization:
+						`Bearer ${jwt}`,
+				}
 			}
+
+			const httpLink = createHttpLink(linkOptions);
+
+			const cache = new InMemoryCache();
+			const apolloClient = new ApolloClient({
+					link: httpLink,
+					cache,
+			});
+			params.postService = new PostService(apolloClient, config.mediaLibraryURL);
+			status = 'loaded';
+		} catch (error) {
+			console.error(error);
+			status = 'error';
 		}
-
-		const httpLink = createHttpLink(linkOptions);
-
-		const cache = new InMemoryCache();
-		const apolloClient = new ApolloClient({
-				link: httpLink,
-				cache,
-		});
-		postService = new PostService(apolloClient, config.mediaLibraryURL);
 	});
 </script>
 
 <main>
-	<LoginForm authService={authService} />
-
-	{#if postService}
-		<PostsList postService={postService} />
+	{#if status === 'loading'}
+		<Loader />
+	{:else if status === 'loaded'}
+		<LoginForm authService={authService} />
+		<svelte:component this={page} params={params} />
+	{:else if status === 'error'}
+		<div>Error!</div>
 	{/if}
-	<svelte:component this={page} params={params} />
+
 </main>
 
 <style>
