@@ -23,21 +23,23 @@ export const POSTS_NEW = gql`query($limit: Int) {
   }
 }`;
 
-export const POSTS_BY_TAG = gql`query($limit: Int) {
+export const POSTS_BY_TAG = gql`query($tag: String $limit: Int) {
   posts(
     limit: $limit,
     sort: "published_at:desc"
+    where: {
+      tags: {
+        name_contains: $tag
+      }
+    }
   ){
 		title
     published_at,
     content,
     visibility,
-    tags (
-      where: {
-      	name_contains: "visual"
-    	}
-    ) {
+    tags {
       name
+      slug
     }
   }
 }`;

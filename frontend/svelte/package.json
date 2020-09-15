@@ -7,8 +7,10 @@
   },
   "license": "UNLICENSED",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "watch:tailwind": "postcss public/tailwind.css -o public/index.css -w",
+    "build:tailwind": "cross-env NODE_ENV=production postcss public/tailwind.css -o public/index.css",  
+    "build": "npm run build:tailwind && rollup -c",
+    "dev": "concurrently \"rollup -c -w\" \"npm run watch:tailwind\"",
     "start": "sirv public --single",
     "validate": "svelte-check"
   },
@@ -35,13 +37,18 @@
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
+    "autoprefixer": "^9.8.6",
     "axios": "^0.20.0",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.2",
     "graphql": "^14.7.0",
     "graphql-tag": "^2.11.0",
     "js-logger": "^1.6.0",
     "page": "^1.11.6",
+    "postcss-cli": "^7.1.2",
     "showdown": "^1.9.1",
     "sirv-cli": "^1.0.0",
-    "svelte-apollo": "^0.3.0"
+    "svelte-apollo": "^0.3.0",
+    "tailwindcss": "^1.8.10"
   }
 }

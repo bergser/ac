@@ -14,9 +14,11 @@
 
 <section>
   <h2>Posts List</h2>
+  <div class="flex flex-wrap">
     {#each posts as post, i}
       <PostCard post={post} />
     {/each}
+  </div>
 </section>
 
 <style>

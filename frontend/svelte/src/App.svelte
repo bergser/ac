@@ -68,8 +68,5 @@
 </main>
 
 <style>
- main {
-	 max-width: 950px;
-	 margin: 0 auto;
- }
+
 </style>
