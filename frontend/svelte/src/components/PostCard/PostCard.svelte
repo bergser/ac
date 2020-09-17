@@ -8,20 +8,19 @@
   const boxWidth: number = tizer ? Math.round(200 / +tizer.height * +tizer.width) : 200;
 </script>
 
-<div class="card mb-4 mr-4 relative" style="width: {boxWidth}px;">
+<div class="card mb-16 mr-16 relative">
   {#if tizer}
-    <img width="{boxWidth}" height={200} data-src={tizer.url} class="lazy" alt="{post.title}" />
+    <img data-src={tizer.url} class="lazy" alt="{post.title}" />
   {/if}
-  <h2 class="block text-sm font-semibold">{@html post.title}</h2>
+  <h2 class="block text-sm font-semibold  text-center text-gray-500 font-thin">{@html post.title}</h2>
 </div>
 
 <style>
 .card {
-  min-height: 200px;
-  min-width: 100px;
+  max-width: 350px;
 }
 .card img {
-  height: 200px;
+  width: 100%;
 }
 h2 {
   max-width: 100%;

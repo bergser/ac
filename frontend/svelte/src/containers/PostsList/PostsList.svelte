@@ -32,7 +32,7 @@
   
 </script>
 
-<div id="posts" class="flex flex-wrap">
+<div id="posts" class="flex flex-wrap justify-center items-center px-20">
   {#if status === "loading"}
     <div>Loading posts...</div>
   {:else if status === "loaded"}

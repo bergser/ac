@@ -84,5 +84,7 @@
 </main>
 
 <style>
-
+	:global(body) {
+		background-color: #111;
+	}
 </style>
