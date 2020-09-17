@@ -7,3 +7,4 @@ export * from './IAppConfig';
 export * from './ITag';
 export * from './IImage';
 export * from './ITagService';
+export * from './IAppContext';

@@ -49,6 +49,7 @@
     "showdown": "^1.9.1",
     "sirv-cli": "^1.0.0",
     "svelte-apollo": "^0.3.0",
-    "tailwindcss": "^1.8.10"
+    "tailwindcss": "^1.8.10",
+    "vanilla-lazyload": "^17.1.2"
   }
 }

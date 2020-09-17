@@ -2,8 +2,10 @@
   import type { IAuthService, IUserCredentials } from "../../shared/interfaces";
   import { AuthService } from "../../services/AuthService";
   import userStore from '../../stores/user-store';
+  import {getAppContext} from '../../context/appContext';
   
-  export let authService: IAuthService;
+  const appContext = getAppContext();
+  const { authService } = appContext;
 
   let userCredentials: IUserCredentials = {
     identifier: "",

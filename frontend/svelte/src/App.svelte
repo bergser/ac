@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import LoginForm from "./components/LoginForm/LoginForm.svelte";
 	import PostsList from "./containers/PostsList/PostsList.svelte";
 	import type { IAppConfig, IAuthService, IPostService, ITagService, IUser } from './shared/interfaces';
@@ -14,16 +14,14 @@
 	import PostRoute from './routes/PostRoute.svelte';
 	import NotFoundRoute from './routes/NotFoundRoute.svelte';
 	import Loader from './components/Loader/Loader.svelte';
+	import {setAppContext} from './context/appContext';
 
 	export let config: IAppConfig;
 
 	const authService: IAuthService = new AuthService(config.authServerURL);
 
 	let page;
-	let params: {
-		postService?: IPostService,
-		tagService?: ITagService
-	} = {};
+	let params;
 	router('/', () => page = HomeRoute);
 	router('/p/:id', (ctx, next) => {
 		params = ctx.params;
@@ -34,33 +32,37 @@
 
 	let status: 'loading' | 'loaded' | 'error' = 'loading';
 
+	const jwt = authService.getToken();
+
+	const linkOptions: HttpOptions = {
+		uri: config.gqlServerURL
+	};
+
+	if (jwt) {
+		linkOptions.headers = {
+			Authorization:
+				`Bearer ${jwt}`,
+		}
+	}
+
+	const httpLink = createHttpLink(linkOptions);
+
+	const cache = new InMemoryCache();
+	const apolloClient = new ApolloClient({
+			link: httpLink,
+			cache,
+	});
+
+	setAppContext({
+		postService: new PostService(apolloClient, config.mediaLibraryURL),
+		tagService: new TagService(apolloClient),
+		authService
+	});
+
 	onMount(async() => {
 		try {
 			const loggedUser = await authService.authenticate();
 			userStore.setUser(loggedUser);
-
-			const jwt = authService.getToken();
-
-			const linkOptions: HttpOptions = {
-				uri: config.gqlServerURL
-			};
-
-			if (jwt) {
-				linkOptions.headers = {
-					Authorization:
-						`Bearer ${jwt}`,
-				}
-			}
-
-			const httpLink = createHttpLink(linkOptions);
-
-			const cache = new InMemoryCache();
-			const apolloClient = new ApolloClient({
-					link: httpLink,
-					cache,
-			});
-			params.postService = new PostService(apolloClient, config.mediaLibraryURL);
-			params.tagService = new TagService(apolloClient);
 			status = 'loaded';
 		} catch (error) {
 			console.error(error);
@@ -73,7 +75,7 @@
 	{#if status === 'loading'}
 		<Loader />
 	{:else if status === 'loaded'}
-		<LoginForm authService={authService} />
+		
 		<svelte:component this={page} params={params} />
 	{:else if status === 'error'}
 		<div>Error!</div>
