@@ -38,7 +38,7 @@
     "apollo-link": "^1.2.14",
     "apollo-link-http": "^1.5.17",
     "autoprefixer": "^9.8.6",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
     "graphql": "^14.7.0",
