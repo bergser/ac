@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { createClient } from "@supabase/supabase-js";
+const colorMode = useColorMode();
 
-const config = useRuntimeConfig();
-const supabase = createClient(
-  config.public.supabase.url,
-  config.public.supabase.key
+const color = computed(() =>
+  colorMode.value === "dark" ? "#020618" : "white"
 );
-const posts = ref<{ title: string }[]>([]);
 
-async function getPosts() {
-  const { data } = await supabase.from("posts").select();
-  posts.value = data ?? [];
-}
-
-onMounted(() => {
-  getPosts();
+useHead({
+  meta: [
+    { charset: "utf-8" },
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { key: "theme-color", name: "theme-color", content: color },
+  ],
+  link: [{ rel: "icon", href: "/favicon.ico" }],
+  htmlAttrs: {
+    lang: "en",
+  },
 });
 </script>
 <template>
-  <div>
-    <ul>
-      <li v-for="value in posts">{{ value.title }}</li>
-    </ul>
-  </div>
+  <u-app>
+    <UMain>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </UMain>
+  </u-app>
 </template>
