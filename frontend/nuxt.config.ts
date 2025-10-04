@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/ui"],
+  modules: ["@pinia/nuxt", "@nuxt/ui"],
   css: ["~/assets/css/main.css"],
   colorMode: {
     preference: "dark",
@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      name: "",
       supabase: {
         url: process.env.SUPABASE_URL,
         key: process.env.SUPABASE_ANON_KEY,
