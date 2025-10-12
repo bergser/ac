@@ -2,16 +2,19 @@
   "name": "@ac/migrate",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-    "migrate": "ts-node src/index.ts"
+  "bin": {
+    "migrate-gh": "./src/index.mjs"
   },
   "keywords": [],
+  "scripts": {
+    "migrate:posts": "pnpm exec migrate-gh posts ./migrate"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ts-node": "^10.9.2",
     "consola": "^3.4.2",
     "dotenv": "^17.2.3",
-    "@types/node": "^24.6.2"
+    "turndown": "^7.2.1",
+    "commander": "^14.0.1"
   }
 }
